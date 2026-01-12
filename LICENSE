@@ -1,0 +1,51 @@
+Blitzmemo License (Proprietary Freeware)
+
+Copyright © Musashino Software. All rights reserved.
+
+This software is proprietary. Source code is not published.
+
+---
+
+Blitzmemo ライセンス（プロプライエタリ / フリーソフト）
+
+本ソフトウェア（Blitzmemo）はプロプライエタリソフトウェアです。ソースコードは公開していません。
+
+開発者は、利用者に対し、本ソフトを無償で非独占的に使用する権利を許諾します（個人利用・商用利用を問わず利用できます）。
+
+ただし、開発者の事前許可なく、以下を行うことはできません。
+
+- 再配布（二次配布を含む）
+- 改変・派生物の配布
+- リバースエンジニアリング（解析、逆コンパイル等）
+
+本ソフトは現状有姿で提供され、開発者は正確性、完全性、特定目的適合性等について一切保証しません。利用者は自己の責任で本ソフトを利用するものとし、開発者は、利用または利用不能により生じた損害について、故意または重過失がある場合を除き責任を負いません。
+
+本ソフトは音声認識（文字起こし）や翻訳等の機能において、OpenAI API 等の第三者サービスを利用します。第三者サービスの規約・料金・取扱いは当該提供者の定めに従い、API キー管理および利用料金の支払いは利用者の責任で行ってください。
+
+本ライセンスの詳細および最新版は、以下をご確認ください（本ファイルと内容が異なる場合、Web の規約が優先されます）。
+
+- 利用規約: https://blitzmemo.com/ja/terms.html
+- プライバシーポリシー: https://blitzmemo.com/ja/privacy.html
+
+---
+
+Blitzmemo License (Proprietary / Freeware)
+
+Blitzmemo is proprietary software. Source code is not published.
+
+The developer grants you a free, non-exclusive right to use the Software (for both personal and commercial purposes).
+
+However, without prior permission from the developer, you may not:
+
+- Redistribute the Software (including secondary distribution)
+- Distribute modified versions or derivative works
+- Reverse engineer the Software (including decompiling, disassembly, etc.)
+
+The Software is provided on an “as is” basis, without warranties of any kind. You use the Software at your own risk. The developer is not liable for damages arising from use or inability to use the Software, except in cases of willful misconduct or gross negligence.
+
+The Software uses third-party services such as the OpenAI API for features including transcription and translation. Terms/fees/handling of third-party services are governed by each provider. You are responsible for managing API keys and paying any usage fees.
+
+For the full text and latest version of the terms, see (if there is any conflict, the Web terms prevail):
+
+- Terms: https://blitzmemo.com/en/terms.html
+- Privacy: https://blitzmemo.com/en/privacy.html
