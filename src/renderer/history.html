@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'"
+    />
+    <title></title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="avi-root avi-history-window">
+      <div class="avi-history-toolbar">
+        <section class="avi-card avi-history-toolbar-card">
+          <div class="avi-row">
+            <input
+              id="historySearch"
+              class="avi-input"
+              type="text"
+              data-i18n="common.searchPlaceholder"
+              data-i18n-attr="placeholder"
+            />
+          </div>
+          <div id="historyStatus" class="avi-help"></div>
+        </section>
+
+        <div class="avi-history-toolbar-actions">
+          <button id="historyClear" class="avi-button avi-button-danger" type="button" data-i18n="common.clear"></button>
+          <button
+            id="historyPin"
+            class="avi-button avi-button-secondary avi-button-icon"
+            type="button"
+            data-i18n="common.alwaysOnTop"
+            data-i18n-attr="title,aria-label"
+            aria-pressed="false"
+          >
+            <svg class="avi-toggle-icon-on" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 4.5l-4 4l-4 1.5l-1.5 1.5l7 7l1.5 -1.5l1.5 -4l4 -4"></path>
+              <path d="M9 15l-4.5 4.5"></path>
+              <path d="M14.5 4l5.5 5.5"></path>
+            </svg>
+            <svg class="avi-toggle-icon-off" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 3l18 18"></path>
+              <path d="M15 4.5l-3.249 3.249m-2.57 1.433l-2.181 .818l-1.5 1.5l7 7l1.5 -1.5l.82 -2.186m1.43 -2.563l3.25 -3.251"></path>
+              <path d="M9 15l-4.5 4.5"></path>
+              <path d="M14.5 4l5.5 5.5"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <section class="avi-card avi-history-card">
+        <div id="historyList" class="avi-history"></div>
+      </section>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

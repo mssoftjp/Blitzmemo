@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'"
+    />
+    <title></title>
+    <link rel="stylesheet" href="./style.css" />
+    <style>
+      body {
+        background: transparent;
+      }
+
+      :root {
+        --avi-memo-shell-bg: var(--avi-surface);
+        --avi-memo-ui-color: var(--avi-text);
+        --avi-memo-text-color: var(--avi-text);
+        --avi-memo-placeholder-color: var(--avi-text-subtle);
+        --avi-memo-button-bg: var(--avi-surface);
+        --avi-memo-button-text: var(--avi-text);
+        --avi-memo-button-border: var(--avi-border-muted);
+        --avi-memo-editor-font-size: 14px;
+      }
+
+      .avi-memo-root {
+        height: 100%;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      .avi-memo-shell {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--avi-border);
+        border-radius: 14px;
+        background: var(--avi-memo-shell-bg);
+        box-sizing: border-box;
+        overflow: hidden;
+      }
+
+      html.avi-platform-mac .avi-memo-shell {
+        border: none;
+        border-radius: 0;
+      }
+
+      html.avi-platform-windows .avi-memo-shell {
+        border: none;
+        border-radius: 0;
+      }
+
+      html.avi-has-native-titlebar .avi-memo-status {
+        display: none;
+      }
+
+      html.avi-has-native-titlebar .avi-memo-spacer {
+        display: none;
+      }
+
+      .avi-memo-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 120px;
+        min-width: 120px;
+        color: var(--avi-memo-ui-color);
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .avi-status {
+        color: inherit;
+        opacity: 0.75;
+        font-weight: 600;
+      }
+
+      .avi-memo-spacer {
+        flex: 1;
+      }
+
+      .avi-memo-actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        padding: 8px 10px 7px;
+        background: var(--avi-surface-muted);
+        border-bottom: 1px solid var(--avi-border);
+      }
+
+      html:not(.avi-has-native-titlebar) .avi-memo-actions {
+        -webkit-app-region: drag;
+      }
+
+      .avi-memo-actions button {
+        -webkit-app-region: no-drag;
+      }
+
+      .avi-memo-actions button * {
+        -webkit-app-region: no-drag;
+      }
+
+      .avi-memo-actions label {
+        -webkit-app-region: no-drag;
+      }
+
+      .avi-memo-actions label * {
+        -webkit-app-region: no-drag;
+      }
+
+      .avi-memo-findbar {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 8px 10px 7px;
+        background: var(--avi-surface-muted);
+        border-bottom: 1px solid var(--avi-border);
+      }
+
+      .avi-memo-findbar .avi-label {
+        width: 60px;
+      }
+
+      .avi-memo-findbar .avi-help {
+        margin-top: 0;
+      }
+
+      #memoFindStatus:empty {
+        display: none;
+      }
+
+      .avi-memo-buttons {
+        display: flex;
+        gap: 6px;
+        flex-wrap: nowrap;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      html.avi-has-native-titlebar .avi-memo-buttons {
+        flex: 1;
+        min-width: 0;
+      }
+
+      html.avi-has-native-titlebar #pinWrap {
+        margin-left: auto;
+      }
+
+      .avi-memo-overflow-hidden {
+        display: none !important;
+      }
+
+      .avi-memo-overflow-menu {
+        position: fixed;
+        z-index: 9999;
+        display: inline-flex;
+        flex-direction: column;
+        min-width: 0;
+        max-width: min(360px, calc(100vw - 18px));
+        max-height: min(60vh, calc(100vh - 18px));
+        overflow: auto;
+        padding: 4px;
+        border-radius: 12px;
+        border: 1px solid var(--avi-border);
+        background: var(--avi-surface);
+        box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18);
+        color: var(--avi-text);
+        -webkit-app-region: no-drag;
+      }
+
+      .avi-memo-overflow-menu * {
+        -webkit-app-region: no-drag;
+      }
+
+      .avi-memo-overflow-item {
+        position: relative;
+        text-align: left;
+        padding: 5px 8px 5px 26px;
+        border-radius: 9px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: inherit;
+        font-size: 13px;
+        line-height: 1.15;
+        white-space: nowrap;
+      }
+
+      .avi-memo-overflow-item::before {
+        content: '✓';
+        position: absolute;
+        left: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0;
+        font-size: 14px;
+        line-height: 1;
+      }
+
+      .avi-memo-overflow-item[data-checked='true']::before {
+        opacity: 0.85;
+      }
+
+      .avi-memo-menu-divider {
+        height: 1px;
+        margin: 4px 6px;
+        background: var(--avi-border);
+        border-radius: 999px;
+        flex: 0 0 auto;
+      }
+
+      .avi-memo-overflow-item:hover {
+        background: var(--avi-surface-muted);
+      }
+
+      .avi-memo-overflow-item:disabled {
+        opacity: 0.55;
+      }
+
+      .avi-memo-overflow-item:focus-visible {
+        outline: none;
+        border-color: var(--avi-focus-border);
+        box-shadow: 0 0 0 3px var(--avi-focus-shadow);
+      }
+
+      .avi-memo-actions .avi-record {
+        height: 34px;
+        padding: 0 12px;
+      }
+
+      .avi-memo-actions .avi-button {
+        height: 34px;
+      }
+
+      .avi-memo-icon {
+        width: 34px;
+        height: 34px;
+        flex: 0 0 auto;
+        border-radius: 12px;
+        border: 1px solid var(--avi-memo-button-border);
+        background: var(--avi-memo-button-bg);
+        color: var(--avi-memo-button-text);
+        line-height: 1;
+        -webkit-app-region: no-drag;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .avi-memo-icon svg {
+        width: 18px;
+        height: 18px;
+        display: block;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .avi-memo-icon:hover {
+        background: var(--avi-surface-hover);
+      }
+
+      .avi-memo-actions .avi-button,
+      .avi-memo-actions .avi-record {
+        background: var(--avi-memo-button-bg);
+        border-color: var(--avi-memo-button-border);
+        color: var(--avi-memo-button-text);
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+
+      .avi-memo-actions .avi-button.avi-button-danger {
+        background: var(--avi-memo-button-bg);
+        border-color: var(--avi-danger-border);
+        color: var(--avi-danger-text);
+      }
+
+      .avi-memo-icon-toggle input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      #autoPasteWrap,
+      #autoMemoWrap {
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      /* user-note: Memo toggle icons use separate on/off SVGs; switch via active state while keeping color logic intact. */
+      .avi-memo-icon-toggle .avi-memo-icon-on {
+        display: none;
+      }
+
+      .avi-memo-icon-toggle .avi-memo-icon-off {
+        display: block;
+      }
+
+      .avi-memo-icon-toggle.avi-memo-icon-active .avi-memo-icon-on {
+        display: block;
+      }
+
+      .avi-memo-icon-toggle.avi-memo-icon-active .avi-memo-icon-off {
+        display: none;
+      }
+
+      .avi-memo-icon-active {
+        border-color: rgb(var(--avi-toggle-rgb));
+        box-shadow: inset 0 0 0 9999px rgb(var(--avi-toggle-rgb));
+        color: #fff;
+      }
+
+      .avi-memo-actions .avi-button.avi-memo-icon-active {
+        border-color: rgb(var(--avi-toggle-rgb));
+        color: #fff;
+      }
+
+      .avi-memo-icon-disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      .avi-memo-text {
+        flex: 1;
+        min-height: 0;
+        min-width: 0;
+        width: auto;
+        resize: none;
+        border: none;
+        border-radius: 0;
+        background: transparent;
+        color: var(--avi-memo-text-color);
+        caret-color: var(--avi-memo-text-color);
+        font-size: var(--avi-memo-editor-font-size);
+      }
+
+      .avi-memo-text::placeholder {
+        color: var(--avi-memo-placeholder-color);
+      }
+
+      .avi-memo-editor {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        position: relative;
+      }
+
+      .avi-memo-hint {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 2;
+        font-size: var(--avi-memo-editor-font-size);
+        line-height: 1.4;
+        color: var(--avi-text-subtle);
+        opacity: 0.55;
+        pointer-events: none;
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+      }
+
+      .avi-memo-gutter {
+        width: var(--avi-memo-gutter-width, 44px);
+        min-width: 38px;
+        overflow: hidden;
+        padding: 10px 0;
+        background: var(--avi-surface-muted);
+        border-right: 1px solid var(--avi-border);
+        box-sizing: border-box;
+        user-select: none;
+      }
+
+      .avi-memo-line-numbers {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .avi-memo-line-number {
+        appearance: none;
+        border: none;
+        background: transparent;
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+        align-items: flex-start;
+        padding: 0 10px;
+        margin: 0;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        font-size: var(--avi-memo-editor-font-size);
+        line-height: 1.4;
+        color: var(--avi-text-subtle);
+      }
+
+      .avi-memo-line-number:hover {
+        background: var(--avi-surface-hover);
+      }
+
+      .avi-memo-line-number:active {
+        background: var(--avi-surface-muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="avi-memo-root">
+      <div class="avi-memo-shell">
+        <div class="avi-memo-actions">
+          <div class="avi-memo-status">
+            <div id="status" class="avi-status" data-i18n="memo.status.idle"></div>
+          </div>
+          <div class="avi-memo-spacer"></div>
+
+          <div id="memoButtons" class="avi-memo-buttons">
+            <button id="toggle" class="avi-record" type="button">
+              <span id="recordDot" class="avi-dot"></span>
+              <span id="recordLabel"></span>
+            </button>
+            <button id="cancel" class="avi-button avi-button-danger" type="button" disabled data-i18n="common.cancel"></button>
+            <button id="translate" class="avi-button avi-button-secondary" type="button" disabled data-i18n="memo.translate"></button>
+            <button id="cut" class="avi-button avi-button-secondary" type="button" data-i18n="common.cut"></button>
+            <button id="copy" class="avi-button" type="button" data-i18n="common.copy"></button>
+            <button id="clear" class="avi-button avi-button-secondary" type="button" data-i18n="common.clear"></button>
+            <button id="history" class="avi-button avi-button-secondary" type="button" data-i18n="history.title"></button>
+            <label
+              id="autoPasteWrap"
+              class="avi-memo-icon avi-memo-icon-toggle"
+              data-i18n="memo.autoPaste"
+              data-i18n-attr="title,aria-label"
+            >
+              <input id="autoPaste" type="checkbox" />
+              <svg class="avi-memo-icon-on" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 5a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1v-10"></path>
+                <path d="M7 20h10"></path>
+                <path d="M9 16v4"></path>
+                <path d="M15 16v4"></path>
+              </svg>
+              <svg class="avi-memo-icon-off" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 4h12a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1m-4 0h-12a1 1 0 0 1 -1 -1v-10a1 1 0 0 1 1 -1"></path>
+                <path d="M7 20h10"></path>
+                <path d="M9 16v4"></path>
+                <path d="M15 16v4"></path>
+                <path d="M3 3l18 18"></path>
+              </svg>
+            </label>
+            <label
+              id="autoMemoWrap"
+              class="avi-memo-icon avi-memo-icon-toggle"
+              data-i18n="memo.autoMemo"
+              data-i18n-attr="title,aria-label"
+            >
+              <input id="autoMemo" type="checkbox" />
+              <svg class="avi-memo-icon-on" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
+                <path d="M13.5 6.5l4 4"></path>
+              </svg>
+              <svg class="avi-memo-icon-off" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M10 10l-6 6v4h4l6 -6m1.99 -1.99l2.504 -2.504a2.828 2.828 0 1 0 -4 -4l-2.5 2.5"></path>
+                <path d="M13.5 6.5l4 4"></path>
+                <path d="M3 3l18 18"></path>
+              </svg>
+            </label>
+            <label
+              id="insertAtCursorWrap"
+              class="avi-memo-icon avi-memo-icon-toggle"
+              data-i18n="prefs.appearance.memoButtons.button.insertAtCursor"
+              data-i18n-attr="title,aria-label"
+            >
+              <input id="insertAtCursor" type="checkbox" />
+              <svg class="avi-memo-icon-on" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M10 12h4"></path>
+                <path d="M9 4a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3"></path>
+                <path d="M15 4a3 3 0 0 0 -3 3v10a3 3 0 0 0 3 3"></path>
+              </svg>
+              <svg class="avi-memo-icon-off" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 4a3 3 0 0 1 3 3v1m0 9a3 3 0 0 1 -3 3"></path>
+                <path d="M15 4a3 3 0 0 0 -3 3v1m0 4v5a3 3 0 0 0 3 3"></path>
+                <path d="M3 3l18 18"></path>
+              </svg>
+            </label>
+            <button
+              id="memoOverflow"
+              class="avi-memo-icon avi-hidden"
+              type="button"
+              data-i18n="common.more"
+              data-i18n-attr="aria-label,title"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"></path>
+              </svg>
+            </button>
+            <label
+              id="pinWrap"
+              class="avi-memo-icon avi-memo-icon-toggle"
+              data-i18n="common.alwaysOnTop"
+              data-i18n-attr="title,aria-label"
+            >
+              <input id="pin" type="checkbox" />
+              <svg class="avi-memo-icon-on" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15 4.5l-4 4l-4 1.5l-1.5 1.5l7 7l1.5 -1.5l1.5 -4l4 -4"></path>
+                <path d="M9 15l-4.5 4.5"></path>
+                <path d="M14.5 4l5.5 5.5"></path>
+              </svg>
+              <svg class="avi-memo-icon-off" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 3l18 18"></path>
+                <path d="M15 4.5l-3.249 3.249m-2.57 1.433l-2.181 .818l-1.5 1.5l7 7l1.5 -1.5l.82 -2.186m1.43 -2.563l3.25 -3.251"></path>
+                <path d="M9 15l-4.5 4.5"></path>
+                <path d="M14.5 4l5.5 5.5"></path>
+              </svg>
+            </label>
+            <button
+              id="settings"
+              class="avi-memo-icon"
+              type="button"
+              data-i18n="common.settings"
+              data-i18n-attr="aria-label,title"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065"
+                ></path>
+                <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="memoFindBar" class="avi-memo-findbar avi-hidden">
+          <div class="avi-row">
+            <label class="avi-label" for="memoFindQuery" data-i18n="common.find"></label>
+            <input id="memoFindQuery" class="avi-input" type="text" />
+            <button id="memoFindPrev" class="avi-button avi-button-secondary" type="button" data-i18n="common.prev"></button>
+            <button id="memoFindNext" class="avi-button avi-button-secondary" type="button" data-i18n="common.next"></button>
+            <button id="memoFindClose" class="avi-button avi-button-secondary" type="button" data-i18n="common.close"></button>
+          </div>
+          <div id="memoReplaceRow" class="avi-row avi-row-secondary">
+            <label class="avi-label" for="memoReplaceText" data-i18n="common.replace"></label>
+            <input id="memoReplaceText" class="avi-input" type="text" />
+            <button id="memoReplaceOne" class="avi-button avi-button-secondary" type="button" data-i18n="common.replace"></button>
+            <button id="memoReplaceAll" class="avi-button avi-button-secondary" type="button" data-i18n="memo.find.replaceAll"></button>
+          </div>
+          <div id="memoFindStatus" class="avi-help"></div>
+        </div>
+
+        <div class="avi-memo-editor">
+          <div id="memoGutter" class="avi-memo-gutter" aria-hidden="true">
+            <div id="memoLineNumbers" class="avi-memo-line-numbers"></div>
+          </div>
+			          <textarea
+			            id="memoText"
+			            class="avi-textarea avi-memo-text"
+			            spellcheck="true"
+			          ></textarea>
+                <div id="memoHint" class="avi-memo-hint avi-hidden" aria-hidden="true"></div>
+		        </div>
+		      </div>
+		    </div>
+
+    <div id="memoOverflowMenu" class="avi-memo-overflow-menu avi-hidden" role="menu" aria-hidden="true"></div>
+    <div id="memoTranslateMenu" class="avi-memo-overflow-menu avi-hidden" role="menu" aria-hidden="true"></div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+{
+  "name": "blitzmemo",
+  "private": true,
+  "version": "0.6.0",
+  "description": "Cross-platform voice input with transcription and translation.",
+  "license": "MIT",
+  "main": "dist/main.js",
+  "scripts": {
+    "prebuild": "npm run lint",
+    "build": "node scripts/build.mjs",
+    "build:release": "node scripts/build.mjs --release",
+    "build:watch": "node scripts/build.mjs --watch",
+    "lint": "eslint . && npm run typecheck",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepare": "node scripts/install-git-hooks.mjs",
+    "package": "npm run build:release && node scripts/package.mjs",
+    "package:macwin": "node scripts/package-macwin.mjs",
+    "package:macwin:zip": "node scripts/package-macwin.mjs --zip",
+    "package:win": "npm run package -- --platform=win32 --arch=x64 --keep-locales=en-US,ja",
+    "package:win:split": "npm run package:win && node scripts/split-zip.mjs --platform=win32 --arch=x64 --max-mb=90",
+    "package:win:arm64": "npm run package -- --platform=win32 --arch=arm64 --keep-locales=en-US,ja",
+    "package:win:arm64:split": "npm run package:win:arm64 && node scripts/split-zip.mjs --platform=win32 --arch=arm64 --max-mb=90",
+    "start": "npm run build && node scripts/start.mjs"
+  },
+  "devDependencies": {
+    "@electron/packager": "^19.0.1",
+    "@eslint/js": "^9.39.2",
+    "@eslint/json": "0.14.0",
+    "@types/node": "^22.15.3",
+    "electron": "^40.1.0",
+    "esbuild": "^0.25.10",
+    "eslint": "^9.39.2",
+    "globals": "^16.5.0",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.50.0"
+  }
+}

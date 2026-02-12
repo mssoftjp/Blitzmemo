@@ -1,0 +1,7 @@
+node_modules/
+dist/
+release/
+memo/
+.DS_Store
+AGENTS.md
+*.code-workspace

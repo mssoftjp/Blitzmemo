@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'"
+    />
+    <title></title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="avi-root avi-preferences-window">
+      <div class="avi-layout">
+        <nav class="avi-sidebar" aria-label="" data-i18n="prefs.title" data-i18n-attr="aria-label">
+          <div class="avi-sidebar-title" data-i18n="prefs.title"></div>
+          <button class="avi-nav-item avi-nav-item-active" type="button" data-avi-nav="main" data-i18n="prefs.nav.main"></button>
+          <button class="avi-nav-item" type="button" data-avi-nav="appearance" data-i18n="prefs.nav.appearance"></button>
+          <button class="avi-nav-item" type="button" data-avi-nav="ai" data-i18n="prefs.nav.ai"></button>
+          <button class="avi-nav-item" type="button" data-avi-nav="pasteMemo" data-i18n="prefs.nav.pasteMemo"></button>
+          <button class="avi-nav-item" type="button" data-avi-nav="dictionary" data-i18n="prefs.nav.dictionary"></button>
+          <button class="avi-nav-item" type="button" data-avi-nav="stats" data-i18n="prefs.nav.stats"></button>
+          <button class="avi-nav-item" type="button" data-avi-nav="usage" data-i18n="prefs.nav.usage"></button>
+          <button class="avi-nav-item" type="button" data-avi-nav="transfer" data-i18n="prefs.nav.transfer"></button>
+          <button class="avi-nav-item" type="button" data-avi-nav="about" data-i18n="prefs.nav.about"></button>
+        </nav>
+
+        <div class="avi-content">
+          <div class="avi-page avi-page-active" data-avi-page="main">
+            <section class="avi-card">
+              <div class="avi-row">
+                <label class="avi-label" for="uiLanguage" data-i18n="prefs.uiLanguage.label"></label>
+                <select id="uiLanguage" class="avi-select">
+                  <!-- user-note: UI language order: English, Japanese, then per the website content language ranking on Wikipedia (インターネットにおける言語の使用), accessed 2026-01-12 (table date: 2025-03-18). -->
+                  <option value="en">English</option>
+                  <option value="ja">日本語</option>
+                  <option value="es">Español</option>
+                  <option value="de">Deutsch</option>
+                  <option value="fr">Français</option>
+                  <option value="pt">Português</option>
+                  <option value="ru">Русский</option>
+                  <option value="it">Italiano</option>
+                  <option value="pl">Polski</option>
+                  <option value="tr">Türkçe</option>
+                  <option value="zh-hans">简体中文</option>
+                  <option value="zh-hant">繁體中文</option>
+                  <option value="vi">Tiếng Việt</option>
+                  <option value="id">Bahasa Indonesia</option>
+                  <option value="ko">한국어</option>
+                  <option value="th">ไทย</option>
+                </select>
+              </div>
+            </section>
+
+            <section class="avi-card">
+              <div class="avi-row">
+                <label class="avi-label" for="language" data-i18n="prefs.language.transcriptionLanguage.label"></label>
+                <select id="language" class="avi-select">
+                  <!-- user-note: Transcription language order: English, Japanese, then per the website content language ranking on Wikipedia (インターネットにおける言語の使用), accessed 2026-01-12 (table date: 2025-03-18). -->
+                  <option value="en" data-i18n="transcriptionLanguage.label.en"></option>
+                  <option value="ja" data-i18n="transcriptionLanguage.label.ja"></option>
+                  <option value="es" data-i18n="transcriptionLanguage.label.es"></option>
+                  <option value="de" data-i18n="transcriptionLanguage.label.de"></option>
+                  <option value="fr" data-i18n="transcriptionLanguage.label.fr"></option>
+                  <option value="pt" data-i18n="transcriptionLanguage.label.pt"></option>
+                  <option value="ru" data-i18n="transcriptionLanguage.label.ru"></option>
+                  <option value="it" data-i18n="transcriptionLanguage.label.it"></option>
+                  <option value="nl" data-i18n="transcriptionLanguage.label.nl"></option>
+                  <option value="pl" data-i18n="transcriptionLanguage.label.pl"></option>
+                  <option value="tr" data-i18n="transcriptionLanguage.label.tr"></option>
+                  <option value="zh-hans" data-i18n="transcriptionLanguage.label.zh-hans"></option>
+                  <option value="zh-hant" data-i18n="transcriptionLanguage.label.zh-hant"></option>
+                  <option value="vi" data-i18n="transcriptionLanguage.label.vi"></option>
+                  <option value="id" data-i18n="transcriptionLanguage.label.id"></option>
+                  <option value="ko" data-i18n="transcriptionLanguage.label.ko"></option>
+                  <option value="uk" data-i18n="transcriptionLanguage.label.uk"></option>
+                  <option value="sv" data-i18n="transcriptionLanguage.label.sv"></option>
+                  <option value="ro" data-i18n="transcriptionLanguage.label.ro"></option>
+                  <option value="da" data-i18n="transcriptionLanguage.label.da"></option>
+                  <option value="th" data-i18n="transcriptionLanguage.label.th"></option>
+                  <option value="no" data-i18n="transcriptionLanguage.label.no"></option>
+                  <option value="ms" data-i18n="transcriptionLanguage.label.ms"></option>
+                </select>
+              </div>
+            </section>
+
+            <section class="avi-card">
+              <div class="avi-row">
+                <label class="avi-label" for="translateTarget" data-i18n="prefs.language.manualTranslateTarget.label"></label>
+                <select id="translateTarget" class="avi-select avi-select-compact">
+                  <!-- user-note: Translate target language order matches the transcription language selector order above. -->
+                  <option value="en" data-i18n="transcriptionLanguage.label.en"></option>
+                  <option value="ja" data-i18n="transcriptionLanguage.label.ja"></option>
+                  <option value="es" data-i18n="transcriptionLanguage.label.es"></option>
+                  <option value="de" data-i18n="transcriptionLanguage.label.de"></option>
+                  <option value="fr" data-i18n="transcriptionLanguage.label.fr"></option>
+                  <option value="pt" data-i18n="transcriptionLanguage.label.pt"></option>
+                  <option value="ru" data-i18n="transcriptionLanguage.label.ru"></option>
+                  <option value="it" data-i18n="transcriptionLanguage.label.it"></option>
+                  <option value="nl" data-i18n="transcriptionLanguage.label.nl"></option>
+                  <option value="pl" data-i18n="transcriptionLanguage.label.pl"></option>
+                  <option value="tr" data-i18n="transcriptionLanguage.label.tr"></option>
+                  <option value="zh-hans" data-i18n="transcriptionLanguage.label.zh-hans"></option>
+                  <option value="zh-hant" data-i18n="transcriptionLanguage.label.zh-hant"></option>
+                  <option value="vi" data-i18n="transcriptionLanguage.label.vi"></option>
+                  <option value="id" data-i18n="transcriptionLanguage.label.id"></option>
+                  <option value="ko" data-i18n="transcriptionLanguage.label.ko"></option>
+                  <option value="uk" data-i18n="transcriptionLanguage.label.uk"></option>
+                  <option value="sv" data-i18n="transcriptionLanguage.label.sv"></option>
+                  <option value="ro" data-i18n="transcriptionLanguage.label.ro"></option>
+                  <option value="da" data-i18n="transcriptionLanguage.label.da"></option>
+                  <option value="th" data-i18n="transcriptionLanguage.label.th"></option>
+                  <option value="no" data-i18n="transcriptionLanguage.label.no"></option>
+                  <option value="ms" data-i18n="transcriptionLanguage.label.ms"></option>
+                </select>
+              </div>
+              <div class="avi-help" data-i18n="prefs.language.manualTranslateTarget.help"></div>
+              <div class="avi-row avi-row-secondary">
+                <label class="avi-label" for="translateEnabled" data-i18n="prefs.language.autoTranslate.label"></label>
+                <input id="translateEnabled" class="avi-checkbox" type="checkbox" />
+              </div>
+              <div class="avi-help" data-i18n="prefs.language.autoTranslate.help"></div>
+            </section>
+
+            <section class="avi-card">
+              <div class="avi-row">
+                <label class="avi-label" for="trayLeftClickAction" data-i18n="prefs.main.trayLeftClickAction.label"></label>
+                <select id="trayLeftClickAction" class="avi-select">
+                  <option value="showMenu" data-i18n="prefs.main.trayLeftClickAction.showMenu"></option>
+                  <option value="toggleRecording" data-i18n="prefs.main.trayLeftClickAction.toggleRecording">
+                  </option>
+                  <option value="openMemoPad" data-i18n="prefs.main.trayLeftClickAction.openMemoPad"></option>
+                  <option value="openHistory" data-i18n="prefs.main.trayLeftClickAction.openHistory"></option>
+                  <option value="openPreferences" data-i18n="prefs.main.trayLeftClickAction.openPreferences"></option>
+                  <option value="none" data-i18n="prefs.main.trayLeftClickAction.none"></option>
+                </select>
+              </div>
+            </section>
+
+            <section class="avi-card">
+              <div class="avi-row">
+                <div class="avi-label" data-i18n="prefs.main.softStart.title"></div>
+              </div>
+              <div class="avi-row avi-row-secondary avi-row-checkbox-column">
+                <label class="avi-label" for="softStartOpenMemoPad" data-i18n="prefs.main.softStart.memoPad"></label>
+                <input id="softStartOpenMemoPad" class="avi-checkbox" type="checkbox" />
+              </div>
+              <div class="avi-row avi-row-secondary avi-row-checkbox-column">
+                <label class="avi-label" for="softStartOpenHistory" data-i18n="prefs.main.softStart.history"></label>
+                <input id="softStartOpenHistory" class="avi-checkbox" type="checkbox" />
+              </div>
+            </section>
+
+            <section class="avi-card">
+              <div class="avi-row">
+                <label class="avi-label" for="updateCheckEnabled" data-i18n="prefs.main.updateCheck.label"></label>
+                <input id="updateCheckEnabled" class="avi-checkbox" type="checkbox" />
+              </div>
+            </section>
+          </div>
+
+	          <div class="avi-page" data-avi-page="pasteMemo">
+	            <section class="avi-card avi-pref-list">
+		              <div class="avi-pref-item">
+		                <div class="avi-row">
+		                  <label class="avi-label" for="autoPaste" data-i18n="prefs.main.autoPaste.label"></label>
+		                  <input id="autoPaste" class="avi-checkbox" type="checkbox" />
+		                </div>
+		                <div class="avi-help" data-i18n="prefs.main.autoPaste.help1"></div>
+		              </div>
+
+	              <div class="avi-pref-item">
+	                <div class="avi-row">
+	                  <label class="avi-label" for="memoPadAutoMemo" data-i18n="prefs.main.memoPadAutoMemo.label"></label>
+	                  <input id="memoPadAutoMemo" class="avi-checkbox" type="checkbox" />
+	                </div>
+	                <div class="avi-help" data-i18n="prefs.main.memoPadAutoMemo.help"></div>
+	              </div>
+
+	              <div class="avi-pref-item">
+	                <div id="memoPadInsertAtCursorRow" class="avi-row">
+	                  <label
+	                    class="avi-label"
+	                    for="memoPadInsertAtCursor"
+	                    data-i18n="prefs.main.memoPadInsertAtCursor.label"
+	                  ></label>
+	                  <input id="memoPadInsertAtCursor" class="avi-checkbox" type="checkbox" />
+	                </div>
+	                <div class="avi-help" data-i18n="prefs.main.memoPadInsertAtCursor.help"></div>
+	              </div>
+
+	              <div class="avi-pref-item">
+	                <div class="avi-row">
+	                  <label class="avi-label" for="memoPadPersistText" data-i18n="prefs.main.memoPadPersistText.label"></label>
+	                  <input id="memoPadPersistText" class="avi-checkbox" type="checkbox" />
+	                </div>
+	                <div class="avi-help" data-i18n="prefs.main.memoPadPersistText.help"></div>
+	              </div>
+	            </section>
+
+            <section class="avi-card avi-only-mac">
+              <div class="avi-row">
+                <div class="avi-label" data-i18n="prefs.ai.accessibility.title"></div>
+                <div id="accessibilityStatus" class="avi-perm">-</div>
+                <button id="requestAccessibility" class="avi-button" data-i18n="common.request"></button>
+                <button id="openAccessibility" class="avi-button avi-button-secondary" data-i18n="common.open"></button>
+              </div>
+              <div class="avi-help" data-i18n="prefs.ai.accessibility.help"></div>
+            </section>
+
+            <section class="avi-card">
+              <div class="avi-row">
+                <label class="avi-label" for="historyMaxItems" data-i18n="prefs.history.maxItems.label"></label>
+                <input
+                  id="historyMaxItems"
+                  class="avi-range"
+                  type="range"
+                  min="50"
+                  max="500"
+                  step="1"
+                />
+                <div id="historyMaxItemsValue" class="avi-range-value"></div>
+              </div>
+            </section>
+          </div>
+
+          <div class="avi-page" data-avi-page="appearance">
+            <section class="avi-card">
+              <div class="avi-row">
+                <label
+                  class="avi-label"
+                  for="memoPadEditorFontSize"
+                  data-i18n="prefs.appearance.memoPadEditorFontSize.label"
+                ></label>
+                <input
+                  id="memoPadEditorFontSize"
+                  class="avi-range"
+                  type="range"
+                  min="6"
+                  max="24"
+                  step="1"
+                />
+                <div id="memoPadEditorFontSizeValue" class="avi-range-value"></div>
+              </div>
+            </section>
+
+            <section class="avi-card">
+              <div class="avi-row">
+                <label class="avi-label" for="themeMode" data-i18n="prefs.appearance.themeMode.label"></label>
+                <select id="themeMode" class="avi-select avi-select-compact">
+                  <option value="system" data-i18n="prefs.appearance.themeMode.system"></option>
+                  <option value="light" data-i18n="prefs.appearance.themeMode.light"></option>
+                  <option value="dark" data-i18n="prefs.appearance.themeMode.dark"></option>
+                </select>
+              </div>
+              <div class="avi-row avi-row-secondary">
+                <label class="avi-label" for="accentColor" data-i18n="prefs.appearance.accentColor.label"></label>
+                <input id="accentColor" class="avi-input avi-input-color" type="color" />
+                <button
+                  id="accentColorReset"
+                  class="avi-button avi-button-secondary"
+                  type="button"
+                  data-i18n="common.reset"
+                ></button>
+	              </div>
+	            </section>
+
+            <section class="avi-card">
+              <div class="avi-row">
+                <label class="avi-label" for="overlayPlacement" data-i18n="prefs.appearance.overlayPlacement.label"></label>
+                <select id="overlayPlacement" class="avi-select">
+                  <option value="bottomCenter" data-i18n="prefs.appearance.overlayPlacement.bottomCenter">
+                  </option>
+                  <option value="bottomRight" data-i18n="prefs.appearance.overlayPlacement.bottomRight">
+                  </option>
+                  <option value="bottomLeft" data-i18n="prefs.appearance.overlayPlacement.bottomLeft">
+                  </option>
+                  <option value="topRight" data-i18n="prefs.appearance.overlayPlacement.topRight"></option>
+                  <option value="topLeft" data-i18n="prefs.appearance.overlayPlacement.topLeft"></option>
+                  <option value="cursor" data-i18n="prefs.appearance.overlayPlacement.cursor"></option>
+                  <option value="none" data-i18n="prefs.appearance.overlayPlacement.none"></option>
+                </select>
+              </div>
+              <div class="avi-row avi-row-secondary">
+                <label class="avi-label" for="overlayOffsetX" data-i18n="prefs.appearance.overlayOffsetX.label"></label>
+                <input
+                  id="overlayOffsetX"
+                  class="avi-input avi-input-compact"
+                  type="number"
+                  min="-4000"
+                  max="4000"
+                  step="1"
+                />
+              </div>
+              <div class="avi-row avi-row-secondary">
+                <label class="avi-label" for="overlayOffsetY" data-i18n="prefs.appearance.overlayOffsetY.label"></label>
+                <input
+                  id="overlayOffsetY"
+                  class="avi-input avi-input-compact"
+                  type="number"
+                  min="-4000"
+                  max="4000"
+                  step="1"
+                />
+              </div>
+              <div class="avi-help" data-i18n="prefs.appearance.overlay.help1"></div>
+              <div class="avi-help" data-i18n="prefs.appearance.overlay.help2"></div>
+            </section>
+
+            <section class="avi-card">
+              <div class="avi-row">
+                <div class="avi-label" data-i18n="prefs.appearance.memoButtons.title"></div>
+                <button
+                  id="memoPadButtonsReset"
+                  class="avi-button avi-button-secondary"
+                  type="button"
+                  data-i18n="common.reset"
+                >
+                </button>
+              </div>
+              <div class="avi-help" data-i18n="prefs.appearance.memoButtons.help"></div>
+
+              <div class="avi-transfer">
+                <div class="avi-transfer-col">
+                  <div class="avi-transfer-title" data-i18n="prefs.appearance.memoButtons.hidden"></div>
+                  <div class="avi-transfer-list-shell">
+                    <select
+                      id="memoPadButtonsHidden"
+                      class="avi-select avi-transfer-list"
+                      size="10"
+                      multiple
+                      aria-label=""
+                      data-i18n="prefs.appearance.memoButtons.hiddenAria"
+                      data-i18n-attr="aria-label"
+                    ></select>
+                  </div>
+                </div>
+
+                <div
+                  class="avi-transfer-controls"
+                  aria-label=""
+                  data-i18n="prefs.appearance.memoButtons.transferAria"
+                  data-i18n-attr="aria-label"
+                >
+                  <button
+                    id="memoPadButtonsAdd"
+                    class="avi-icon-button"
+                    type="button"
+                    aria-label=""
+                    title=""
+                    data-i18n="common.show"
+                    data-i18n-attr="aria-label,title"
+                  >
+                    &gt;
+                  </button>
+                  <button
+                    id="memoPadButtonsRemove"
+                    class="avi-icon-button"
+                    type="button"
+                    aria-label=""
+                    title=""
+                    data-i18n="common.hide"
+                    data-i18n-attr="aria-label,title"
+                  >
+                    &lt;
+                  </button>
+                </div>
+
+                <div class="avi-transfer-col">
+                  <div class="avi-transfer-title" data-i18n="prefs.appearance.memoButtons.visible"></div>
+                  <div class="avi-transfer-list-shell">
+                    <select
+                      id="memoPadButtonsVisible"
+                      class="avi-select avi-transfer-list"
+                      size="10"
+                      multiple
+                      aria-label=""
+                      data-i18n="prefs.appearance.memoButtons.visibleAria"
+                      data-i18n-attr="aria-label"
+                    ></select>
+                  </div>
+                </div>
+
+                <div
+                  class="avi-transfer-order"
+                  aria-label=""
+                  data-i18n="prefs.appearance.memoButtons.reorderAria"
+                  data-i18n-attr="aria-label"
+                >
+                  <button
+                    id="memoPadButtonsUp"
+                    class="avi-icon-button"
+                    type="button"
+                    aria-label=""
+                    title=""
+                    data-i18n="common.moveUp"
+                    data-i18n-attr="aria-label,title"
+                  >
+                    ↑
+                  </button>
+                  <button
+                    id="memoPadButtonsDown"
+                    class="avi-icon-button"
+                    type="button"
+                    aria-label=""
+                    title=""
+                    data-i18n="common.moveDown"
+                    data-i18n-attr="aria-label,title"
+                  >
+                    ↓
+                  </button>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="avi-page" data-avi-page="ai">
+            <section class="avi-card">
+              <div class="avi-row">
+                <label class="avi-label" for="apiKey" data-i18n="prefs.ai.apiKey.label"></label>
+                <input
+                  id="apiKey"
+                  class="avi-input"
+                  type="password"
+                  data-i18n="prefs.ai.apiKey.placeholder"
+                  data-i18n-attr="placeholder"
+                  autocomplete="off"
+                />
+                <button id="saveKey" class="avi-button" data-i18n="prefs.ai.apiKey.save"></button>
+              </div>
+              <div id="keyStatus" class="avi-help"></div>
+            </section>
+
+            <section class="avi-card">
+              <div class="avi-row">
+                <label class="avi-label" for="model" data-i18n="prefs.ai.model.label"></label>
+                <select id="model" class="avi-select">
+                  <option value="gpt-4o-transcribe">gpt-4o-transcribe</option>
+                  <option value="gpt-4o-mini-transcribe">gpt-4o-mini-transcribe</option>
+                </select>
+              </div>
+              <div class="avi-help" data-i18n="prefs.ai.model.help1"></div>
+              <div class="avi-help" data-i18n="prefs.ai.model.help2"></div>
+            </section>
+
+            <section class="avi-card avi-shortcuts-card">
+              <div class="avi-shortcut">
+                <div class="avi-label" data-i18n="prefs.shortcuts.hotkey.label"></div>
+                <div
+                  id="hotkey"
+                  class="avi-hotkey-display"
+                  aria-label=""
+                  data-i18n="prefs.shortcuts.hotkey.label"
+                  data-i18n-attr="aria-label"
+                ></div>
+                <div class="avi-shortcut-actions">
+                  <button id="changeHotkey" class="avi-button" data-i18n="common.change"></button>
+                  <button id="resetHotkey" class="avi-button avi-button-secondary" data-i18n="common.reset"></button>
+                </div>
+                <div id="hotkeyStatus" class="avi-help avi-shortcut-status"></div>
+              </div>
+            </section>
+
+            <section class="avi-card">
+              <div class="avi-row">
+                <label
+                  class="avi-label"
+                  for="recordingMaxSeconds"
+                  data-i18n="prefs.main.recordingMaxSeconds.label"
+                >
+                </label>
+                <input
+                  id="recordingMaxSeconds"
+                  class="avi-range"
+                  type="range"
+                  min="30"
+                  max="300"
+                  step="1"
+                />
+                <div id="recordingMaxSecondsValue" class="avi-range-value"></div>
+              </div>
+              <div class="avi-help" data-i18n="prefs.main.recordingMaxSeconds.help1"></div>
+              <div class="avi-help" data-i18n="prefs.main.recordingMaxSeconds.help2"></div>
+            </section>
+
+            <section class="avi-card">
+              <div class="avi-row">
+                <label class="avi-label" for="silenceAutoStopSeconds" data-i18n="prefs.main.silenceAutoStopSeconds.label"></label>
+                <input
+                  id="silenceAutoStopSeconds"
+                  class="avi-range"
+                  type="range"
+                  min="0"
+                  max="30"
+                  step="1"
+                />
+                <div id="silenceAutoStopSecondsValue" class="avi-range-value"></div>
+              </div>
+              <div class="avi-help" data-i18n="prefs.main.silence.help2"></div>
+              <div class="avi-help" data-i18n="prefs.main.silence.help3"></div>
+            </section>
+          </div>
+
+	          <div class="avi-page" data-avi-page="dictionary">
+	            <section class="avi-card">
+	              <div class="avi-row avi-row-inline">
+	                <label class="avi-label" for="dictionaryEnabled" data-i18n="prefs.dictionary.enabled.label"></label>
+	                <input id="dictionaryEnabled" class="avi-checkbox" type="checkbox" />
+	              </div>
+	              <div class="avi-help" data-i18n="prefs.dictionary.description"></div>
+	              <div class="avi-row avi-row-secondary avi-row-inline">
+	                <div class="avi-label" data-i18n="prefs.dictionary.mode.replace"></div>
+	                <button
+	                  id="addDictionaryReplaceRule"
+	                  class="avi-button avi-button-secondary"
+	                  type="button"
+	                  data-i18n="prefs.dictionary.addRule"
+	                ></button>
+	              </div>
+	              <div id="dictionaryReplaceTable" class="avi-table-wrap"></div>
+	              <div class="avi-help" data-i18n="prefs.dictionary.help"></div>
+
+	              <div class="avi-divider"></div>
+
+	              <div class="avi-row avi-row-inline">
+	                <div class="avi-label" data-i18n="prefs.dictionary.mode.protect"></div>
+	                <button
+	                  id="addDictionaryProtectRule"
+	                  class="avi-button avi-button-secondary"
+	                  type="button"
+	                  data-i18n="prefs.dictionary.addRule"
+	                ></button>
+	              </div>
+	              <div id="dictionaryProtectTable" class="avi-table-wrap"></div>
+
+	              <div id="dictionaryStatus" class="avi-help"></div>
+	            </section>
+	          </div>
+
+	          <div class="avi-page" data-avi-page="usage">
+	            <section class="avi-card">
+	              <div id="usageMeta" class="avi-help"></div>
+	              <div id="usageSummary" class="avi-help"></div>
+	              <div id="usageTable" class="avi-table-wrap"></div>
+	              <div class="avi-help" data-i18n="prefs.usage.help.estimatedCost"></div>
+	              <div class="avi-row avi-row-secondary">
+	                <button id="clearUsage" class="avi-button avi-button-secondary" type="button" data-i18n="common.reset">
+	                </button>
+	              </div>
+	            </section>
+	          </div>
+
+	          <div class="avi-page" data-avi-page="stats">
+	            <section class="avi-card">
+	              <div class="avi-row avi-row-secondary">
+	                <label class="avi-label" for="statsGroupBy" data-i18n="prefs.stats.groupBy.label"></label>
+	                <select id="statsGroupBy" class="avi-select">
+	                  <option value="day" data-i18n="prefs.stats.groupBy.day"></option>
+                  <option value="week" data-i18n="prefs.stats.groupBy.week"></option>
+                  <option value="month" data-i18n="prefs.stats.groupBy.month"></option>
+                </select>
+              </div>
+
+              <div class="avi-row avi-row-secondary">
+                <label class="avi-label" for="keyboardCharsPerMinute" data-i18n="prefs.stats.keyboardCharsPerMinute.label">
+                </label>
+                <input
+                  id="keyboardCharsPerMinute"
+                  class="avi-input avi-input-compact"
+                  type="number"
+                  min="0"
+                  max="10000"
+                  step="1"
+	                />
+	              </div>
+                <div class="avi-row avi-row-secondary avi-row-inline">
+                  <label
+                    class="avi-label"
+                    for="statsIncludeWaitTime"
+                    data-i18n="prefs.stats.includeWaitTime.label"
+                  ></label>
+                  <input id="statsIncludeWaitTime" class="avi-checkbox" type="checkbox" />
+                </div>
+		              <div id="statsMeta" class="avi-help"></div>
+		              <div id="statsSummary" class="avi-help"></div>
+		              <div id="statsTable" class="avi-table-wrap"></div>
+		              <div class="avi-row avi-row-secondary">
+	                <button id="clearStats" class="avi-button avi-button-secondary" type="button" data-i18n="common.reset">
+	                </button>
+	              </div>
+	            </section>
+	          </div>
+		
+		          <div class="avi-page" data-avi-page="transfer">
+		            <section class="avi-card">
+		              <div class="avi-row avi-row-secondary avi-row-checkbox-column">
+		                <label class="avi-label" for="appDataAppSettings" data-i18n="prefs.transfer.appSettings"></label>
+		                <input id="appDataAppSettings" class="avi-checkbox" type="checkbox" checked />
+		              </div>
+		              <div class="avi-row avi-row-secondary avi-row-checkbox-column">
+		                <label class="avi-label" for="appDataDictionary" data-i18n="prefs.transfer.dictionary"></label>
+		                <input id="appDataDictionary" class="avi-checkbox" type="checkbox" checked />
+		              </div>
+		              <div class="avi-row avi-row-secondary avi-row-checkbox-column">
+		                <label class="avi-label" for="appDataHistory" data-i18n="prefs.transfer.history"></label>
+		                <input id="appDataHistory" class="avi-checkbox" type="checkbox" checked />
+		              </div>
+		              <div class="avi-row avi-row-secondary avi-row-checkbox-column">
+		                <label class="avi-label" for="appDataStats" data-i18n="prefs.transfer.stats"></label>
+		                <input id="appDataStats" class="avi-checkbox" type="checkbox" checked />
+		              </div>
+		              <div class="avi-row avi-row-secondary avi-row-checkbox-column">
+		                <label class="avi-label" for="appDataUsage" data-i18n="prefs.transfer.usage"></label>
+		                <input id="appDataUsage" class="avi-checkbox" type="checkbox" checked />
+		              </div>
+	
+	              <div class="avi-row avi-row-secondary">
+	                <button id="appDataExport" class="avi-button avi-button-secondary" type="button" data-i18n="common.export">
+	                </button>
+	                <button id="appDataImport" class="avi-button avi-button-secondary" type="button" data-i18n="common.import">
+	                </button>
+	              </div>
+	
+	              <div id="appDataStatus" class="avi-help"></div>
+	            </section>
+	          </div>
+
+	          <div class="avi-page" data-avi-page="about">
+	            <section class="avi-card">
+	              <div class="avi-row">
+	                <div class="avi-label" data-i18n="prefs.about.copyright.label"></div>
+	                <div id="aboutCopyright" class="avi-value"></div>
+	              </div>
+
+	              <div class="avi-row avi-row-secondary">
+	                <div class="avi-label" data-i18n="prefs.about.version.label"></div>
+	                <div class="avi-about-version-row">
+	                  <div id="aboutVersion" class="avi-value"></div>
+	                  <button
+	                    id="aboutCheckUpdates"
+	                    class="avi-button avi-button-secondary"
+	                    type="button"
+	                    data-i18n="prefs.about.updateCheck.button"
+	                  ></button>
+	                </div>
+	              </div>
+	
+	              <div class="avi-row avi-row-secondary">
+	                <div class="avi-label" data-i18n="prefs.about.website.label"></div>
+	                <a id="aboutWebsiteLink" class="avi-link" href="#" rel="noopener noreferrer"></a>
+	              </div>
+
+	              <div class="avi-row avi-row-secondary">
+	                <div class="avi-label" data-i18n="prefs.about.authorWebsite.label"></div>
+	                <a id="aboutAuthorWebsiteLink" class="avi-link" href="#" rel="noopener noreferrer"></a>
+	              </div>
+	
+	              <div class="avi-row avi-row-secondary">
+	                <div class="avi-label" data-i18n="prefs.about.github.label"></div>
+	                <a id="aboutGithubLink" class="avi-link" href="#" rel="noopener noreferrer"></a>
+	              </div>
+
+	              <div class="avi-row avi-row-secondary">
+	                <div class="avi-label" data-i18n="prefs.about.donation.label"></div>
+	                <a id="aboutDonationLink" class="avi-link" href="#" rel="noopener noreferrer"></a>
+	              </div>
+	            </section>
+
+	            <div class="avi-about-donation">
+	              <img
+	                class="avi-about-donation-qr"
+	                src="./assets/buymeacoffee-qr-code.png"
+	                alt=""
+	                data-i18n="prefs.about.donation.qrAlt"
+	                data-i18n-attr="alt"
+	              />
+	              <div class="avi-help avi-about-donation-message" data-i18n="prefs.about.donation.qrMessage"></div>
+	            </div>
+	          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="appDataExportPasswordModal" class="avi-modal-overlay avi-hidden" tabindex="-1">
+      <div class="avi-modal" role="dialog" aria-modal="true" aria-labelledby="appDataExportPasswordTitle">
+        <div id="appDataExportPasswordTitle" class="avi-modal-title" data-i18n="prefs.transfer.exportPassword.title"></div>
+
+        <div id="appDataExportPasswordChoice">
+          <div class="avi-help" data-i18n="prefs.transfer.exportPassword.help"></div>
+          <div class="avi-modal-actions">
+            <button
+              id="appDataExportPasswordNoPassword"
+              class="avi-button avi-button-secondary"
+              type="button"
+              data-i18n="prefs.transfer.exportPassword.noPassword"
+            ></button>
+            <button
+              id="appDataExportPasswordSetPassword"
+              class="avi-button avi-button-primary"
+              type="button"
+              data-i18n="prefs.transfer.exportPassword.setPassword"
+            ></button>
+            <button id="appDataExportPasswordCancel" class="avi-button avi-button-secondary" type="button" data-i18n="common.cancel"></button>
+          </div>
+        </div>
+
+        <div id="appDataExportPasswordSet" class="avi-hidden">
+          <div class="avi-row">
+            <label class="avi-label" for="appDataExportPasswordInput" data-i18n="prefs.transfer.exportPassword.password"></label>
+            <input id="appDataExportPasswordInput" class="avi-input" type="password" autocomplete="new-password" />
+          </div>
+          <div class="avi-row avi-row-secondary">
+            <label class="avi-label" for="appDataExportPasswordConfirmInput" data-i18n="prefs.transfer.exportPassword.passwordConfirm"></label>
+            <input id="appDataExportPasswordConfirmInput" class="avi-input" type="password" autocomplete="new-password" />
+          </div>
+          <div id="appDataExportPasswordError" class="avi-help avi-help-danger"></div>
+          <div class="avi-modal-actions">
+            <button id="appDataExportPasswordBack" class="avi-button avi-button-secondary" type="button" data-i18n="prefs.transfer.exportPassword.back"></button>
+            <button id="appDataExportPasswordSubmit" class="avi-button avi-button-primary" type="button" data-i18n="common.export"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="appDataImportPasswordModal" class="avi-modal-overlay avi-hidden" tabindex="-1">
+      <div class="avi-modal" role="dialog" aria-modal="true" aria-labelledby="appDataImportPasswordTitle">
+        <div id="appDataImportPasswordTitle" class="avi-modal-title" data-i18n="prefs.transfer.importPassword.title"></div>
+        <div class="avi-help" data-i18n="prefs.transfer.importPassword.help"></div>
+        <div class="avi-row avi-row-secondary">
+          <label class="avi-label" for="appDataImportPasswordInput" data-i18n="prefs.transfer.importPassword.password"></label>
+          <input id="appDataImportPasswordInput" class="avi-input" type="password" autocomplete="current-password" />
+        </div>
+        <div id="appDataImportPasswordError" class="avi-help avi-help-danger"></div>
+        <div class="avi-modal-actions">
+          <button id="appDataImportPasswordCancel" class="avi-button avi-button-secondary" type="button" data-i18n="common.cancel"></button>
+          <button id="appDataImportPasswordSubmit" class="avi-button avi-button-primary" type="button" data-i18n="common.import"></button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
