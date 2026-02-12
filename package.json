@@ -1,7 +1,7 @@
 {
   "name": "blitzmemo",
   "private": true,
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Cross-platform voice input with transcription and translation.",
   "license": "MIT",
   "main": "dist/main.js",

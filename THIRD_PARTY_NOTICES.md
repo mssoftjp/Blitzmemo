@@ -6,7 +6,7 @@ Blitzmemo is open-source software released under the MIT License (see `LICENSE`)
 
 ## Summary (2026-01-12)
 
-As of `package-lock.json` (Blitzmemo `0.6.0`), the npm dependency tree does **not** contain copyleft licenses such as GPL/LGPL/AGPL. Most dependencies are permissive licenses (MIT/Apache-2.0/BSD/ISC, etc.).
+As of `package-lock.json` (Blitzmemo `0.6.1`), the npm dependency tree does **not** contain copyleft licenses such as GPL/LGPL/AGPL. Most dependencies are permissive licenses (MIT/Apache-2.0/BSD/ISC, etc.).
 
 ## Included in distributed binaries
 
