@@ -2,11 +2,25 @@
 
 Type faster by speaking. Blitzmemo is voice-to-text software for macOS and Windows, powered by OpenAI’s next-generation speech recognition AI.
 
+## Screenshots
+
+| Memo Mode | Global Mode (Input Everywhere) | Usage Stats |
+| --- | --- | --- |
+| <img src="docs/assets/hero-input-demo-ja.gif" alt="Memo mode demo" width="260"> | <img src="docs/assets/shortcut-input-demo-ja.gif" alt="Global mode (input everywhere) demo" width="260"> | <img src="docs/assets/usage-stats-ja.png" alt="Usage stats screenshot" width="260"> |
+
 - Website: https://blitzmemo.com/
 - Download: https://blitzmemo.com/en/#download
 - Terms: https://blitzmemo.com/en/terms.html
 - Privacy: https://blitzmemo.com/en/privacy.html
 - Contact: mailto:contact@ms-soft.jp
+
+## WER Comparison
+
+Blitzmemo supports OpenAI transcription models `gpt-4o-transcribe` and `gpt-4o-mini-transcribe`. Lower WER (Word Error Rate) is better.
+
+Data note: This chart is reconstructed from OpenAI public data, quoting FLEURS WER data for languages supported by Blitzmemo. Source: https://openai.com/index/introducing-our-next-generation-audio-models/
+
+<img src="docs/assets/wer-comparison.png" alt="WER comparison chart" width="520">
 
 ## Install
 
