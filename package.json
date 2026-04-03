@@ -28,7 +28,7 @@
     "@eslint/js": "^9.39.2",
     "@eslint/json": "0.14.0",
     "@types/node": "^22.15.3",
-    "electron": "^40.1.0",
+    "electron": "^40.8.3",
     "esbuild": "^0.25.10",
     "eslint": "^9.39.2",
     "globals": "^16.5.0",
