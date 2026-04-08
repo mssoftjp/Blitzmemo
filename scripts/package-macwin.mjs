@@ -1,7 +1,7 @@
 import { spawn } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { formatTimestamp, makeUniqueOutDir } from './lib.mjs';
+import { formatTimestamp, makeUniqueOutDir, pathExists } from './lib.mjs';
 
 async function getAppVersion() {
   try {
@@ -11,6 +11,21 @@ async function getAppVersion() {
     return version || null;
   } catch {
     return null;
+  }
+}
+
+async function hasReleaseBuildArtifacts() {
+  const requiredDistFiles = ['dist/main.js', 'dist/preload.js', 'dist/overlay-preload.js', 'dist/package.json', 'dist/buildInfo.json'];
+  for (const relativePath of requiredDistFiles) {
+    if (!(await pathExists(relativePath))) return false;
+  }
+
+  try {
+    const raw = await fs.readFile(path.join(process.cwd(), 'dist', 'buildInfo.json'), 'utf8');
+    const buildInfo = JSON.parse(raw);
+    return buildInfo && typeof buildInfo === 'object' && buildInfo.release === true;
+  } catch {
+    return false;
   }
 }
 
@@ -32,8 +47,10 @@ async function main() {
   const version = await getAppVersion();
   const outDirBase = version ? path.join(releaseRoot, version) : path.join(releaseRoot, formatTimestamp(new Date()));
   const outDir = await makeUniqueOutDir(outDirBase);
-
-  await run('node', ['scripts/build.mjs', '--release']);
+  // user-note: Packaging is intentionally build-free so release scripts can control when lint/build run.
+  if (!(await hasReleaseBuildArtifacts())) {
+    throw new Error('missing release build artifacts. Run npm run build:release first.');
+  }
 
   const macArch = process.arch;
   await run('node', [

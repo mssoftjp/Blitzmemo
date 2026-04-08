@@ -42,3 +42,4 @@ try {
 }
 
 installHookFile(repoRoot, 'pre-commit');
+installHookFile(repoRoot, 'pre-push');
