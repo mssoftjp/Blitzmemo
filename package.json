@@ -1,7 +1,7 @@
 {
   "name": "blitzmemo",
   "private": true,
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Cross-platform voice input with transcription and translation.",
   "license": "MIT",
   "engines": {
@@ -19,6 +19,7 @@
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "ci:local": "npm run lint && npm run build:core",
+    "release:check": "node scripts/check-release.mjs",
     "deps:status": "node scripts/deps-status.mjs",
     "deps:upgrade:minor": "node scripts/deps-upgrade-minor.mjs",
     "deps:upgrade:security": "node scripts/deps-upgrade-security.mjs",

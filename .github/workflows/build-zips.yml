@@ -1,23 +1,50 @@
-name: Build zips
+name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      tag_name:
+        description: Existing tag to release (for example 0.6.2 or v0.6.2)
+        required: true
+        type: string
   push:
     tags:
       - 'v*'
+      - '*.*.*'
+
+concurrency:
+  group: release-${{ inputs.tag_name || github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
   macwin:
     runs-on: macos-latest
+    permissions:
+      contents: write
+    env:
+      RELEASE_TAG: ${{ inputs.tag_name || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag_name || github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
+      - id: release_meta
+        run: node scripts/check-release.mjs --tag "$RELEASE_TAG" --github-output "$GITHUB_OUTPUT"
       - run: npm run package:macwin:zip
       - uses: actions/upload-artifact@v4
         with:
           name: zips
-          path: release/**
+          path: ${{ steps.release_meta.outputs.asset_glob }}
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release_meta.outputs.tag }}
+          name: ${{ steps.release_meta.outputs.release_name }}
+          files: ${{ steps.release_meta.outputs.asset_glob }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          overwrite_files: true
