@@ -1,7 +1,7 @@
 node_modules/
 dist/
 release/
-memo/
+/memo/
 .DS_Store
 AGENTS.md
 *.code-workspace
