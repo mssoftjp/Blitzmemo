@@ -38,8 +38,12 @@ async function main() {
     main: 'main.js'
   };
   await fs.writeFile('dist/package.json', `${JSON.stringify(distPkg, null, 2)}\n`);
+  const buildInfo = {
+    // user-note: Packaging scripts read this marker to reject debug dist output when a release build is required.
+    release: isRelease
+  };
+  await fs.writeFile('dist/buildInfo.json', `${JSON.stringify(buildInfo, null, 2)}\n`);
   if (isRelease) {
-    await fs.rm('dist/buildInfo.json', { force: true });
     await fs.rm('dist/main.js.map', { force: true });
     await fs.rm('dist/preload.js.map', { force: true });
     await fs.rm('dist/overlay-preload.js.map', { force: true });

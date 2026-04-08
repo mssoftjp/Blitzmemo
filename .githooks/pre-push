@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 set -e
 
-npm run lint:quick
+npm run ci:local

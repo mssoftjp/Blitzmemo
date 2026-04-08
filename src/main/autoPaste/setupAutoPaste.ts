@@ -71,6 +71,10 @@ function getClipboardRestoreDelayMs(text: string): number {
   return Math.min(AUTO_PASTE_CLIPBOARD_RESTORE_MAX_DELAY_MS, Math.max(0, Math.floor(next)));
 }
 
+function shouldAttemptClipboardImageRead(formats: string[]): boolean {
+  return formats.some((format) => !CORE_CLIPBOARD_FORMATS.has(format.toLowerCase()));
+}
+
 export function setupAutoPaste(options: SetupAutoPasteOptions): AutoPasteApi {
   // user-note: Auto-paste queue is intentionally small and time-bounded to prevent accidental pastes long after the recording ends.
   const autoPasteQueue: AutoPasteQueueItem[] = [];
@@ -112,9 +116,12 @@ export function setupAutoPaste(options: SetupAutoPasteOptions): AutoPasteApi {
       text = clipboard.readText();
       html = clipboard.readHTML();
       rtf = clipboard.readRTF();
-      const image = clipboard.readImage();
-      if (!image.isEmpty()) {
-        imagePng = image.toPNG();
+      // user-note: Skip readImage() for clearly text-only clipboard states, but preserve non-core formats to avoid dropping valid images.
+      if (shouldAttemptClipboardImageRead(formats)) {
+        const image = clipboard.readImage();
+        if (!image.isEmpty()) {
+          imagePng = image.toPNG();
+        }
       }
     } catch (error) {
       if (options.debug) {
