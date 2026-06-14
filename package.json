@@ -39,7 +39,7 @@
     "@eslint/json": "0.14.0",
     "@types/node": "^22.19.17",
     "electron": "^40.8.5",
-    "esbuild": "^0.25.10",
+    "esbuild": "^0.28.1",
     "eslint": "^9.39.4",
     "globals": "^16.5.0",
     "typescript": "^5.9.2",
